@@ -1,0 +1,5 @@
+CORS
+If you are making a cross-origin request to an API from a web page, the API needs to implement CORS correctly to allow your request to succeed. Without CORS, the browser will block your request, and you won't be able to access the API's resources.
+To be more specific, when you make a cross-origin request from a web page, your browser sends an "Origin" header that includes the domain of the page that made the request. The API server then needs to check this header and decide whether to allow the request or not. If the API server allows requests from the domain specified in the "Origin" header, it needs to include an "Access-Control-Allow-Origin" header in its response that specifies the domain(s) that are allowed to access the resource.
+In summary, without correct CORS implementation on the API server, your cross-origin request will be blocked by the browser, and you won't be able to access the API's resources from your web page.
+
