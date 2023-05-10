@@ -1,8 +1,10 @@
 const express          = require('express');
 const bodyParser       = require('body-parser');
 const morgan           = require('morgan');
+const mongoose         = require('mongoose');
 
 const app = express();
+mongoose.connect("mongodb+srv://mridul549:xTKgkDyitxpKcOY7@cluster0.iuoe1mb.mongodb.net/?retryWrites=true&w=majority")
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
@@ -22,6 +24,6 @@ app.use((req,res,next) => {
     next();
 })
 
-app.use('/', require('./api/routes/home'));
+app.use('/', require('./routes/home'));
 
 module.exports = app;
