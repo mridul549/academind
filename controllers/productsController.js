@@ -1,11 +1,26 @@
 const Product = require('../models/products')
 const mongoose = require('mongoose');
 
-module.exports.homeGet = function(req,res) {
+module.exports.getAllProducts = function(req,res) {
     Product.find()
+    .select('name price _id')
     .exec()
     .then(docs => {
-        res.status(200).json(docs);
+        const response = {
+            count: docs.length,
+            products: docs.map(doc => {
+                return {
+                    name: doc.name,
+                    price: doc.price,
+                    _id: doc._id,
+                    request: {
+                        type: "GET",
+                        url: 'http://localhost:3000/products/' + doc._id
+                    }
+                }
+            })
+        }
+        res.status(200).json(response);
     })
     .catch(err => {
         res.status(500).json({
@@ -14,7 +29,7 @@ module.exports.homeGet = function(req,res) {
     })
 }
 
-module.exports.homePost = function(req,res) {
+module.exports.createNewProduct = function(req,res) {
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
@@ -60,7 +75,9 @@ module.exports.deleteProductByID = function(req,res) {
     Product.deleteOne({_id: id})
     .exec()
     .then(result => {
-        res.status(200).json(result);
+        res.status(200).json({
+            message: "Product deleted",
+        });
     })
     .catch(err => {
         console.log(err);
