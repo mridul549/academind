@@ -1,9 +1,11 @@
 const Product = require('../models/products')
 const mongoose = require('mongoose');
+const multer = require('multer');
+const upload = multer({dest: 'uploads/'})
 
 module.exports.getAllProducts = function(req,res) {
     Product.find()
-    .select('name price _id')
+    .select('name price _id productImage')
     .exec()
     .then(docs => {
         const response = {
@@ -13,6 +15,7 @@ module.exports.getAllProducts = function(req,res) {
                     name: doc.name,
                     price: doc.price,
                     _id: doc._id,
+                    productImage: doc.productImage,
                     request: {
                         type: "GET",
                         url: 'http://localhost:3000/products/' + doc._id
@@ -33,7 +36,8 @@ module.exports.createNewProduct = function(req,res) {
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
-        price: req.body.price
+        price: req.body.price,
+        productImage: req.file.path
     });
     product
     .save()
