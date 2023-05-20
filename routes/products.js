@@ -5,6 +5,7 @@ const multer = require('multer');
 
 const Product = require('../models/products');
 const { default: mongoose } = require('mongoose');
+const checkAuth = require('../middleware/check-auth');
 
 // implementing all the below functions to manage file uploads
 // cb -> callback
@@ -38,10 +39,10 @@ const upload = multer({
 })
 
 router.get('/', productController.getAllProducts)
-router.post('/', upload.single('productImage') ,productController.createNewProduct)
+router.post('/', checkAuth, upload.single('productImage') ,productController.createNewProduct)
 
 router.get('/:productid', productController.getProductId);
-router.delete('/:productId', productController.deleteProductByID);
-router.patch('/:productID', productController.patchProductByID);
+router.delete('/:productId', checkAuth, productController.deleteProductByID);
+router.patch('/:productID', checkAuth, productController.patchProductByID);
 
 module.exports = router;
