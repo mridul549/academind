@@ -27,7 +27,7 @@ module.exports.getOrders = function(req,res) {
 }
 
 module.exports.makeOrder = function(req,res) {
-    Product.findById(req.query.productID)
+    Product.findById(req.body.productID)
     .then(product => {
         if(!product){
             res.status(404).json({
@@ -36,8 +36,8 @@ module.exports.makeOrder = function(req,res) {
         }
         const order = new Order({
             _id: new mongoose.Types.ObjectId(),
-            quantity: req.query.quantity,
-            product: req.query.productID
+            quantity: req.body.quantity,
+            product: req.body.productID
         })
 
         return order.save()
